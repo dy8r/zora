@@ -9,7 +9,7 @@ from random import shuffle, uniform
 from pyrogram import filters
 from pyromod import Client, Message
 import asyncio
-from settings import BOT_TOKEN, TG_IDS
+from settings import BOT_TOKEN, TG_IDS, PROXY, USE_PROXY
 
 api_id = 8
 api_hash = "7245de8e747a0d6fbe11f7cc14fcc0bb"
@@ -60,6 +60,9 @@ def get_web3(chain):
         session = requests.Session()
         session.mount('http://', adapter)
         session.mount('https://', adapter)
+        if USE_PROXY == 1:
+            proxy_dick = {'https': 'http://' + PROXY, 'http': 'http://' + PROXY}
+            session.proxies = proxy_dick
         return Web3(Web3.HTTPProvider(CHAIN_RPC[chain], request_kwargs={'timeout': 60}, session=session))
 
 def get_scan(chain):
